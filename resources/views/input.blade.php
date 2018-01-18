@@ -16,6 +16,7 @@
     </div>
     @endsection
 @section('content')
+    @include('message')
     <div class="panel panel-default">
         <div class="panel-body">
             @include('_form')

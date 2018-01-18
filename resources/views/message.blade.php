@@ -4,7 +4,7 @@
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
-        <strong>成功!</strong> {{ Session::get('success') }}
+        <strong>{{ Session::get('success') }}</strong>
     </div>
 @endif
 
@@ -14,6 +14,6 @@
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
-        <strong>失败!</strong> {{ Session::get('error') }}
+        <strong>{{ Session::get('error') }}</strong>
     </div>
 @endif

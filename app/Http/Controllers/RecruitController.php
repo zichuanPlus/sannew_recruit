@@ -15,8 +15,18 @@ class RecruitController extends Controller{
             if($validator->fails()){
                 return redirect()->back()->withErrors($validator);
             }
-
             $data = $request->input('Student');
+            $studentCard = Student::where('idcard_number',$data['idcard_number'])->first();
+            if($studentCard != null){
+                $request->flash();
+                return redirect()->back()->with('error','添加失败！输入的身份证号已存在！');
+            }
+            $studentPhone = Student::where('phone',$data['phone'])->first();
+            if($studentPhone != null){
+                $request->flash();
+                return redirect()->back()->with('error','添加失败！输入的手机号已存在');
+            }
+
             Student::create($data);
             return redirect('lists')->with('success','添加成功');
         }
@@ -67,10 +77,23 @@ class RecruitController extends Controller{
             $student['phone']=$data['phone'];
             $student['admit_status']=$data['admit_status'];
 
+            //判定是否存在重复手机号和身份证号
+            $studentCard = Student::where('idcard_number',$student['idcard_number'])->first();
+            if($studentCard != null){
+                $request->flash();
+                return redirect()->back()->with('error','修改失败！输入的身份证号已存在！');
+            }
+            $studentPhone = Student::where('phone',$student['phone'])->first();
+            if($studentPhone != null){
+                $request->flash();
+                return redirect()->back()->with('error','修改失败！输入的手机号已存在');
+            }
+
             if($student->save()){
                 return redirect('lists')->with('success','修改成功-'.$id);
             }
         }
+
         return view('update',[
             'student'=>$student
         ]);
