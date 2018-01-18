@@ -7,8 +7,8 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>Laravel-Auth</title>
+    <link rel="SHORTCUT ICON" href="{{asset('sources/cropped-LOGO白底.jpg')}}"/>
+    <title>三牛中美中学</title>
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{ asset('static/bootstrap/css/bootstrap.min.css') }}">
