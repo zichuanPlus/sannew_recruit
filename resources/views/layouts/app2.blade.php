@@ -15,6 +15,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset('own/css/sannew.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('own/css/sannew2.css')}}">
     <!-- Scripts -->
+    <script type="text/javascript" src="{{asset('/static/My97DatePicker/WdatePicker.js')}}"></script>
     <script>
         window.Laravel = <?php echo json_encode([
             'csrfToken' => csrf_token(),
@@ -96,8 +97,6 @@
         </div>
     </div>
 </div>
-
-
 <footer id="sd-footer">
     <div class="sd-copyright">
         <div class="container">
@@ -116,11 +115,12 @@
 </footer>
 
 
-
-
 <!-- jQuery 文件 -->
-<script src="{{ asset('static/jquery/jquery.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('static/jquery/jquery.min.js') }}"></script>
 <!-- Bootstrap JavaScript 文件 -->
-<script src="{{ asset('static/bootstrap/js/bootstrap.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('static/bootstrap/js/bootstrap.min.js') }}"></script>
+
+@section('script')
+@show
 </body>
 </html>

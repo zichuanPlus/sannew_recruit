@@ -14,7 +14,7 @@
         </div>
     </div>
     <div class="form-group">
-        <label for="age" class="col-sm-2 control-label">身份证号：</label>
+        <label for="idcard_number" class="col-sm-2 control-label">身份证号：</label>
 
         <div class="col-sm-5">
             <input type="text" name="Student[idcard_number]"
@@ -26,7 +26,7 @@
         </div>
     </div>
     <div class="form-group">
-        <label for="age" class="col-sm-2 control-label">手机号：</label>
+        <label for="phone" class="col-sm-2 control-label">手机号：</label>
 
         <div class="col-sm-5">
             <input type="text" name="Student[phone]"
@@ -35,6 +35,19 @@
         </div>
         <div class="col-sm-5">
             <p class="form-control-static text-danger">{{ $errors->first('Student.phone') }}</p>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="exam_time" class="col-sm-2 control-label">考试/面试时间：</label>
+
+        <div class="col-sm-5">
+            <input type="text" name="Student[exam_time]"
+                   value="{{ old('Student')['exam_time'] ?  old('Student')['exam_time'] : $student->exam_time }}"
+                   class="form-control" id="exam_time" placeholder="yyyy-MM-dd"
+                   onFocus="WdatePicker({startDate:'%y-%M-01',dateFmt:'yyyy-MM-dd',alwaysUseStartDate:true})">
+        </div>
+        <div class="col-sm-5">
+            <p class="form-control-static text-danger">{{ $errors->first('Student.exam_time') }}</p>
         </div>
     </div>
     <div class="form-group">

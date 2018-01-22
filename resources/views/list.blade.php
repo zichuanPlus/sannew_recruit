@@ -23,6 +23,7 @@
             <tr>
                 <th>ID</th>
                 <th>姓名</th>
+                <th>考试/面试时间</th>
                 <th>身份证号</th>
                 <th>手机号</th>
                 <th>考试状态</th>
@@ -34,6 +35,7 @@
                 <tr>
                     <th scope="row">{{ $student->id }}</th>
                     <td>{{ $student->name }}</td>
+                    <td>{{ $student->exam_time }}</td>
                     <td>{{ $student->idcard_number }}</td>
                     <td>{{ $student->phone }}</td>
                     <td>{{ $student->getAdmitStatus($student->admit_status) }}</td>

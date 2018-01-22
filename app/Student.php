@@ -15,7 +15,7 @@ class Student extends Model{
     const STATUS_UN = -1;
 
     protected $table = 'students';
-    protected $fillable = ['name', 'idcard_number','phone','admit_status'];
+    protected $fillable = ['name', 'idcard_number','phone','admit_status','exam_time'];
 
     protected function getDateFormat(){
         return time();

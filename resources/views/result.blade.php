@@ -20,8 +20,7 @@
             <tr><th class="warning">未查询到该学生考试信息。</th></tr>
         @else
             <tr><th>姓名</th><td>{{$student->name}}</td></tr>
-            <tr><th>身份证号</th><td>{{$student->idcard_number}}</td></tr>
-            <tr><th>手机号</th><td>{{$student->phone}}</td></tr>
+            <tr><th>考试/面试时间</th><td>{{$student->exam_time}}</td></tr>
             <tr><th>考试结果</th><td>{{$student->getAdmitStatus($student->admit_status)}}</td></tr>
         @endif
         </tbody>

@@ -11,6 +11,9 @@ class RecruitController extends Controller{
      */
     public function add(Request $request){
         if($request->isMethod('POST')){
+
+            //记录上次输入
+            $request->flash();
             $validator = $this->inputValidate($request);
             if($validator->fails()){
                 return redirect()->back()->withErrors($validator);
@@ -18,15 +21,14 @@ class RecruitController extends Controller{
             $data = $request->input('Student');
             $studentCard = Student::where('idcard_number',$data['idcard_number'])->first();
             if($studentCard != null){
-                $request->flash();
                 return redirect()->back()->with('error','添加失败！输入的身份证号已存在！');
             }
             $studentPhone = Student::where('phone',$data['phone'])->first();
             if($studentPhone != null){
-                $request->flash();
                 return redirect()->back()->with('error','添加失败！输入的手机号已存在');
             }
 
+            $data['exam_time'] = strtotime($data['exam_time']);
             Student::create($data);
             return redirect('lists')->with('success','添加成功');
         }
@@ -49,6 +51,10 @@ class RecruitController extends Controller{
         if($student == null){
             $student = $studentPhone;
         }
+
+        if($student != null){
+            $student->exam_time = date('Y-m-d',$student->exam_time);
+        }
         return view('result',[
             'student'=>$student
         ]);
@@ -57,6 +63,9 @@ class RecruitController extends Controller{
 
     public function allStudents(){
         $students = Student::all();
+        foreach ($students as $student){
+            $student->exam_time = date('Y-m-d', $student->exam_time);
+        }
         return view('list',[
             'students'=>$students
         ]);
@@ -64,10 +73,13 @@ class RecruitController extends Controller{
 
     public function update(Request $request, $id){
         $student = Student::find($id);
+        $idcard_old = $student['idcard_number'];
+        $phone_old = $student['phone'];
 
         if($request->isMethod('POST')){
             $validator = $this->inputValidate($request);
             if($validator->fails()){
+                $request->flash();
                 return redirect()->back()->withErrors($validator);
             }
 
@@ -75,25 +87,30 @@ class RecruitController extends Controller{
             $student['name']=$data['name'];
             $student['idcard_number']=$data['idcard_number'];
             $student['phone']=$data['phone'];
+            $student['exam_time']=strtotime($data['exam_time']);
             $student['admit_status']=$data['admit_status'];
 
             //判定是否存在重复手机号和身份证号
-            $studentCard = Student::where('idcard_number',$student['idcard_number'])->first();
-            if($studentCard != null){
-                $request->flash();
-                return redirect()->back()->with('error','修改失败！输入的身份证号已存在！');
+            if($idcard_old != $student['idcard_number']){
+                $studentCard = Student::where('idcard_number',$student['idcard_number'])->first();
+                if($studentCard != null){
+                    $request->flash();
+                    return redirect()->back()->with('error','修改失败！输入的身份证号已存在！');
+                }
             }
-            $studentPhone = Student::where('phone',$student['phone'])->first();
-            if($studentPhone != null){
-                $request->flash();
-                return redirect()->back()->with('error','修改失败！输入的手机号已存在');
+            if($phone_old != $student['phone']){
+                $studentPhone = Student::where('phone',$student['phone'])->first();
+                if($studentPhone != null){
+                    $request->flash();
+                    return redirect()->back()->with('error','修改失败！输入的手机号已存在');
+                }
             }
 
             if($student->save()){
                 return redirect('lists')->with('success','修改成功-'.$id);
             }
         }
-
+        $student->exam_time = date('Y-m-d', $student->exam_time);
         return view('update',[
             'student'=>$student
         ]);
@@ -103,7 +120,8 @@ class RecruitController extends Controller{
         $validator = \Validator::make($request->input(),[
             'Student.name'=>'required|min:4|max:20',
             'Student.idcard_number'=>'required',
-            'Student.phone'=>'required|regex:/^1[34578][0-9]{9}$/'
+            'Student.phone'=>'required|regex:/^1[34578][0-9]{9}$/',
+            'Student.exam_time'=>'required'
         ],[
             'required'=>':attribute 为必填项',
             'min'=>':attribute 长度不符合要求',
@@ -114,6 +132,7 @@ class RecruitController extends Controller{
             'Student.name'=>'姓名',
             'Student.idcard_number'=>'身份证号',
             'Student.phone'=>'手机号',
+            'Student.exam_time'=>'考试/面试时间'
         ]);
         return $validator;
     }
